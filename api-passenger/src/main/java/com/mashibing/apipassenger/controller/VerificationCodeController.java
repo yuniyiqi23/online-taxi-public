@@ -2,6 +2,7 @@ package com.mashibing.apipassenger.controller;
 
 import com.mashibing.apipassenger.request.VerificationCodeDTO;
 import com.mashibing.apipassenger.service.VerificationCodeService;
+import com.mashibing.internal.dto.ResponseResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,9 +15,8 @@ public class VerificationCodeController {
     VerificationCodeService verificationCodeService;
 
     @GetMapping("/verification-code")
-    public String getVerificationCode(@RequestBody VerificationCodeDTO verificationCodeDTO) {
-        String result = verificationCodeService.generateCode(verificationCodeDTO.getPassengerPhone());
-        return result;
+    public ResponseResult getVerificationCode(@RequestBody VerificationCodeDTO verificationCodeDTO) {
+        return verificationCodeService.generateCode(verificationCodeDTO.getPassengerPhone());
     }
 
 }
