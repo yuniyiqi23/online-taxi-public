@@ -2,6 +2,7 @@ package com.mashibing.servicepassengeruser.dto;
 
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Data
@@ -14,11 +15,11 @@ public class PassengerUser {
     /**
      * 创建时间
      */
-    private LocalTime gmtCreate;
+    private LocalDateTime gmtCreate;
     /**
      * 修改时间
      */
-    private LocalTime gmtModified;
+    private LocalDateTime gmtModified;
     /**
      * 乘客手机号
      */

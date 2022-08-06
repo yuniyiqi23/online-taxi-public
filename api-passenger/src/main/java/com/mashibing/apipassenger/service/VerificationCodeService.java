@@ -1,8 +1,10 @@
 package com.mashibing.apipassenger.service;
 
+import com.mashibing.apipassenger.remote.ServicePassengerUserClient;
 import com.mashibing.apipassenger.remote.ServiceVerificationCodeClient;
 import com.mashibing.internal.constant.CommonStatusEnum;
 import com.mashibing.internal.dto.ResponseResult;
+import com.mashibing.internal.request.VerificationCodeDTO;
 import com.mashibing.internal.response.NumberCodeResponse;
 import com.mashibing.internal.response.TokenResponse;
 import org.apache.commons.lang.StringUtils;
@@ -19,6 +21,8 @@ public class VerificationCodeService {
 
     @Autowired
     ServiceVerificationCodeClient serviceVerificationCodeClient;
+    @Autowired
+    ServicePassengerUserClient servicePassengerUserClient;
     @Autowired
     StringRedisTemplate stringRedisTemplate;
 
@@ -76,7 +80,11 @@ public class VerificationCodeService {
             return ResponseResult.fail(CommonStatusEnum.VERIFICATION_CODE_ERROR.getCode(),
                     CommonStatusEnum.VERIFICATION_CODE_ERROR.getValue());
         }
-        // 3、验证码正确，返回token
+        // 3、验证码正确（登录或是注册）
+        VerificationCodeDTO verificationCodeDTO = new VerificationCodeDTO();
+        verificationCodeDTO.setPassengerPhone(phoneNumber);
+        servicePassengerUserClient.loginOrRegsiter(verificationCodeDTO);
+        // 返回token
         TokenResponse tokenResponse = new TokenResponse();
         tokenResponse.setToken("111111");
         return ResponseResult.success(tokenResponse);

@@ -6,6 +6,8 @@ import com.mashibing.servicepassengeruser.mapper.PassengerUserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,9 +22,20 @@ public class UserService {
         HashMap<String, Object> map = new HashMap<>();
         map.put("passenger_phone", passengerPhone);
         List<PassengerUser> passengerUsers = passengerUserMapper.selectByMap(map);
-        // 没有记录，注册
-        // 有记录，登录
-        System.out.println(passengerUsers.size() == 0 ? "没有记录": passengerUsers.get(0).getPassengerName());
+        if(passengerUsers.size() == 0){
+            // 没有记录，注册
+            PassengerUser passengerUser = new PassengerUser();
+            passengerUser.setPassengerName("张三");
+            passengerUser.setPassengerGender((byte) 1);
+            LocalDateTime now = LocalDateTime.now();
+            passengerUser.setGmtCreate(now);
+            passengerUser.setGmtModified(now);
+            passengerUser.setState((byte) 0);
+            passengerUserMapper.insert(passengerUser);
+        }
+//        else{
+//            // 有记录，登录
+//        }
 
         return ResponseResult.success();
     }

@@ -15,7 +15,7 @@ public class UserController {
     UserService userService;
 
     @PostMapping("/user")
-    public ResponseResult loginOrReg(@RequestBody VerificationCodeDTO verificationCodeDTO){
+    public ResponseResult loginOrRegsiter(@RequestBody VerificationCodeDTO verificationCodeDTO){
         String passengerPhone = verificationCodeDTO.getPassengerPhone();
         return userService.loginOrRegister(passengerPhone);
     }
