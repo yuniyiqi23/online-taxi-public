@@ -3,11 +3,11 @@ package com.mashibing.internal.response;
 import lombok.Data;
 
 @Data
-public class NumberCodeResponse {
+public class TokenResponse {
 
     /**
-     * 验证码
+     * Token
      */
-    private int numberCode;
+    private String token;
 
 }
