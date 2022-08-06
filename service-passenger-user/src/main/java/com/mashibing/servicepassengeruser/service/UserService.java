@@ -26,6 +26,7 @@ public class UserService {
             // 没有记录，注册
             PassengerUser passengerUser = new PassengerUser();
             passengerUser.setPassengerName("张三");
+            passengerUser.setPassengerPhone(passengerPhone);
             passengerUser.setPassengerGender((byte) 1);
             LocalDateTime now = LocalDateTime.now();
             passengerUser.setGmtCreate(now);
