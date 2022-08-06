@@ -81,6 +81,7 @@ public class VerificationCodeService {
                     CommonStatusEnum.VERIFICATION_CODE_ERROR.getValue());
         }
         // 3、验证码正确（登录或是注册）
+        // TODO 删除redis验证码（只能用一次）
         VerificationCodeDTO verificationCodeDTO = new VerificationCodeDTO();
         verificationCodeDTO.setPassengerPhone(phoneNumber);
         servicePassengerUserClient.loginOrRegsiter(verificationCodeDTO);
