@@ -1,4 +1,4 @@
-package com.mashibing.internal.constant;
+package com.mashibing.internal.enums;
 
 import lombok.Getter;
 

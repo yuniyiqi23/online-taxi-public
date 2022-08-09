@@ -2,11 +2,13 @@ package com.mashibing.apipassenger.service;
 
 import com.mashibing.apipassenger.remote.ServicePassengerUserClient;
 import com.mashibing.apipassenger.remote.ServiceVerificationCodeClient;
-import com.mashibing.internal.constant.CommonStatusEnum;
+import com.mashibing.internal.constant.IdentifyConstant;
+import com.mashibing.internal.enums.CommonStatusEnum;
 import com.mashibing.internal.dto.ResponseResult;
 import com.mashibing.internal.request.VerificationCodeDTO;
 import com.mashibing.internal.response.NumberCodeResponse;
 import com.mashibing.internal.response.TokenResponse;
+import com.mashibing.internal.util.JwtUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -85,9 +87,11 @@ public class VerificationCodeService {
         VerificationCodeDTO verificationCodeDTO = new VerificationCodeDTO();
         verificationCodeDTO.setPassengerPhone(phoneNumber);
         servicePassengerUserClient.loginOrRegsiter(verificationCodeDTO);
-        // 返回token
+
+        // 生成token，返回
+        String token = JwtUtils.generateToken(phoneNumber, IdentifyConstant.PASSENGER_IDENTIFY);
         TokenResponse tokenResponse = new TokenResponse();
-        tokenResponse.setToken("111111");
+        tokenResponse.setToken(token);
         return ResponseResult.success(tokenResponse);
     }
 

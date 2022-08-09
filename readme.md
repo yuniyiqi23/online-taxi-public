@@ -1,5 +1,5 @@
 ### 启动Nacos
-cd /Users/adam/Software/nacos  
+cd /Users/adam/Software/nacos/bin  
 sh startup.sh -m standalone
 
 ## docker
