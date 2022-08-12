@@ -19,7 +19,7 @@ public class NumberCodeController {
         // 定义返回值
         NumberCodeResponse response =  new NumberCodeResponse();
         response.setNumberCode(randomInt);
-        return new ResponseResult().success(response);
+        return ResponseResult.success(response);
     }
 
 }

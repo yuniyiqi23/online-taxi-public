@@ -9,6 +9,7 @@ import com.mashibing.internal.request.VerificationCodeDTO;
 import com.mashibing.internal.response.NumberCodeResponse;
 import com.mashibing.internal.response.TokenResponse;
 import com.mashibing.internal.util.JwtUtils;
+import com.mashibing.internal.util.RedisKeyUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -19,7 +20,6 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class VerificationCodeService {
 
-    private static String verificationCodePreFix = "Verification-Code-";
 
     @Autowired
     ServiceVerificationCodeClient serviceVerificationCodeClient;
@@ -42,23 +42,13 @@ public class VerificationCodeService {
         System.out.println("apipassenger --> 获取随机验证码 ： " + numberCode);
 
         // 验证码存入redis
-        String redisKey = generateRedisKey(phoneNumber);
+        String redisKey = RedisKeyUtils.generateVerCodeKey(phoneNumber);
         stringRedisTemplate.opsForValue().set(redisKey, numberCode + "", 2, TimeUnit.MINUTES);
-        System.out.println("验证码存入redis");
         // TODO 将验证码发送到手机上
 
         return ResponseResult.success();
     }
 
-    /**
-     * 生成RedisKey
-     *
-     * @param phoneNumber
-     * @return
-     */
-    public static String generateRedisKey(String phoneNumber) {
-        return verificationCodePreFix + phoneNumber;
-    }
 
     /**
      * 校验乘客验证码
@@ -69,7 +59,7 @@ public class VerificationCodeService {
      */
     public ResponseResult checkCode(String phoneNumber, String verificationCode) {
         // 根据phoneNumber获取redis中的验证码
-        String redisKey = generateRedisKey(phoneNumber);
+        String redisKey = RedisKeyUtils.generateVerCodeKey(phoneNumber);
         String redisValue = stringRedisTemplate.opsForValue().get(redisKey);
         // 校验验证码
         // 1、验证码不存在
@@ -88,10 +78,15 @@ public class VerificationCodeService {
         verificationCodeDTO.setPassengerPhone(phoneNumber);
         servicePassengerUserClient.loginOrRegsiter(verificationCodeDTO);
 
-        // 生成token，返回
+        // 生成token
         String token = JwtUtils.generateToken(phoneNumber, IdentifyConstant.PASSENGER_IDENTIFY);
+        System.out.println("token ： " + token);
         TokenResponse tokenResponse = new TokenResponse();
         tokenResponse.setToken(token);
+        // token存储redis
+        String tokenKey = RedisKeyUtils.generateTokenKey(phoneNumber, IdentifyConstant.PASSENGER_IDENTIFY);
+        stringRedisTemplate.opsForValue().set(tokenKey, token, 30, TimeUnit.DAYS);
+
         return ResponseResult.success(tokenResponse);
     }
 
