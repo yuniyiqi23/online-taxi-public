@@ -3,6 +3,7 @@ package com.mashibing.apipassenger.service;
 import com.mashibing.apipassenger.remote.ServicePassengerUserClient;
 import com.mashibing.apipassenger.remote.ServiceVerificationCodeClient;
 import com.mashibing.internal.constant.IdentifyConstant;
+import com.mashibing.internal.constant.TokenConstant;
 import com.mashibing.internal.enums.CommonStatusEnum;
 import com.mashibing.internal.dto.ResponseResult;
 import com.mashibing.internal.request.VerificationCodeDTO;
@@ -43,7 +44,7 @@ public class VerificationCodeService {
 
         // 验证码存入redis
         String redisKey = RedisKeyUtils.generateVerCodeKey(phoneNumber);
-        stringRedisTemplate.opsForValue().set(redisKey, numberCode + "", 2, TimeUnit.MINUTES);
+        stringRedisTemplate.opsForValue().set(redisKey, numberCode + "", 10, TimeUnit.MINUTES);
         // TODO 将验证码发送到手机上
 
         return ResponseResult.success();
@@ -78,14 +79,18 @@ public class VerificationCodeService {
         verificationCodeDTO.setPassengerPhone(phoneNumber);
         servicePassengerUserClient.loginOrRegsiter(verificationCodeDTO);
 
-        // 生成token
-        String token = JwtUtils.generateToken(phoneNumber, IdentifyConstant.PASSENGER_IDENTIFY);
-        System.out.println("token ： " + token);
+        // 生成tokenAccess、tokenRefrash
+        String tokenAccess = JwtUtils.generateToken(phoneNumber, IdentifyConstant.PASSENGER_IDENTIFY, TokenConstant.TOKEN_TYPE_ACCESS);
+        String tokenRefrash = JwtUtils.generateToken(phoneNumber, IdentifyConstant.PASSENGER_IDENTIFY, TokenConstant.TOKEN_TYPE_REFRASH);
+        System.out.println("token ： " + tokenAccess);
         TokenResponse tokenResponse = new TokenResponse();
-        tokenResponse.setToken(token);
+        tokenResponse.setTokenAccess(tokenAccess);
+        tokenResponse.setTokenRefrash(tokenRefrash);
         // token存储redis
-        String tokenKey = RedisKeyUtils.generateTokenKey(phoneNumber, IdentifyConstant.PASSENGER_IDENTIFY);
-        stringRedisTemplate.opsForValue().set(tokenKey, token, 30, TimeUnit.DAYS);
+        String tokenAccessKey = RedisKeyUtils.generateTokenKey(phoneNumber, IdentifyConstant.PASSENGER_IDENTIFY, TokenConstant.TOKEN_PERFIX_ACCESS);
+        stringRedisTemplate.opsForValue().set(tokenAccessKey, tokenAccess, 30, TimeUnit.DAYS);
+        String tokenRefrashKey = RedisKeyUtils.generateTokenKey(phoneNumber, IdentifyConstant.PASSENGER_IDENTIFY, TokenConstant.TOKEN_PERFIX_REFRASH);
+        stringRedisTemplate.opsForValue().set(tokenRefrashKey, tokenRefrash, 31, TimeUnit.DAYS);
 
         return ResponseResult.success(tokenResponse);
     }

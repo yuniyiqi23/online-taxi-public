@@ -6,8 +6,13 @@ import lombok.Data;
 public class TokenResponse {
 
     /**
-     * Token
+     * TokenAccess
      */
-    private String token;
+    private String tokenAccess;
+    /**
+     * TokenRefrash
+     */
+    private String tokenRefrash;
+
 
 }

@@ -1,5 +1,6 @@
 package com.mashibing.apipassenger.interceptor;
 
+import com.mashibing.internal.constant.TokenConstant;
 import com.mashibing.internal.dto.ResponseResult;
 import com.mashibing.internal.dto.TokenResult;
 import com.mashibing.internal.util.JwtUtils;
@@ -29,7 +30,7 @@ public class JwtInterceptor implements HandlerInterceptor {
         // 获取token
         String token = request.getHeader("Authorization");
         // 判断是否为空
-        if(StringUtils.isBlank(token)){
+        if (StringUtils.isBlank(token)) {
             result = false;
         }
         // 对比redis存储的token
@@ -37,17 +38,17 @@ public class JwtInterceptor implements HandlerInterceptor {
             TokenResult tokenResult = JwtUtils.parseToken(token);
             String phone = tokenResult.getPhone();
             String identify = tokenResult.getIdentify();
-            String tokenKey = RedisKeyUtils.generateTokenKey(phone, identify);
+            String tokenKey = RedisKeyUtils.generateTokenKey(phone, identify, TokenConstant.TOKEN_PERFIX_ACCESS);
             String redisValue = stringRedisTemplate.opsForValue().get(tokenKey);
-            if(StringUtils.isBlank(redisValue) || !redisValue.trim().equals(token.trim())){
+            if (StringUtils.isBlank(redisValue) || !redisValue.trim().equals(token.trim())) {
                 result = false;
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             result = false;
             resultString = "token invalued";
         }
 
-        if(!result){
+        if (!result) {
             PrintWriter writer = response.getWriter();
             writer.print(JSONObject.fromObject(ResponseResult.fail(resultString)).toString());
         }
