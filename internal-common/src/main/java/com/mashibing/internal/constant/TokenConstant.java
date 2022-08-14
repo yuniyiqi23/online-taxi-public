@@ -11,13 +11,4 @@ public class TokenConstant {
      */
     public static final String TOKEN_TYPE_REFRASH = "TokenRefrash";
 
-    /**
-     * 访问token key前缀
-     */
-    public static final String TOKEN_PERFIX_ACCESS = "TokenAccess-";
-    /**
-     * 刷新token key前缀
-     */
-    public static final String TOKEN_PERFIX_REFRASH = "TokenRefrash-";
-
 }

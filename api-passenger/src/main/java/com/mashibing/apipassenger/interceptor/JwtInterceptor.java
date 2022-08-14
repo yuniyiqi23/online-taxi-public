@@ -38,7 +38,7 @@ public class JwtInterceptor implements HandlerInterceptor {
             TokenResult tokenResult = JwtUtils.parseToken(token);
             String phone = tokenResult.getPhone();
             String identify = tokenResult.getIdentify();
-            String tokenKey = RedisKeyUtils.generateTokenKey(phone, identify, TokenConstant.TOKEN_PERFIX_ACCESS);
+            String tokenKey = RedisKeyUtils.generateTokenKey(phone, identify, TokenConstant.TOKEN_TYPE_ACCESS);
             String redisValue = stringRedisTemplate.opsForValue().get(tokenKey);
             if (StringUtils.isBlank(redisValue) || !redisValue.trim().equals(token.trim())) {
                 result = false;

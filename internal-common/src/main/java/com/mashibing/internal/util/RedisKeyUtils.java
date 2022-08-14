@@ -24,7 +24,7 @@ public class RedisKeyUtils {
      * @return
      */
     public static String generateTokenKey(String phoneNumber, String identify, String tokenType) {
-        return tokenType + identify + "-" + phoneNumber ;
+        return tokenType + "-" + identify + "-" + phoneNumber ;
     }
 
 }

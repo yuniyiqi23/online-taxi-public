@@ -87,9 +87,9 @@ public class VerificationCodeService {
         tokenResponse.setTokenAccess(tokenAccess);
         tokenResponse.setTokenRefrash(tokenRefrash);
         // token存储redis
-        String tokenAccessKey = RedisKeyUtils.generateTokenKey(phoneNumber, IdentifyConstant.PASSENGER_IDENTIFY, TokenConstant.TOKEN_PERFIX_ACCESS);
+        String tokenAccessKey = RedisKeyUtils.generateTokenKey(phoneNumber, IdentifyConstant.PASSENGER_IDENTIFY, TokenConstant.TOKEN_TYPE_ACCESS);
         stringRedisTemplate.opsForValue().set(tokenAccessKey, tokenAccess, 30, TimeUnit.DAYS);
-        String tokenRefrashKey = RedisKeyUtils.generateTokenKey(phoneNumber, IdentifyConstant.PASSENGER_IDENTIFY, TokenConstant.TOKEN_PERFIX_REFRASH);
+        String tokenRefrashKey = RedisKeyUtils.generateTokenKey(phoneNumber, IdentifyConstant.PASSENGER_IDENTIFY, TokenConstant.TOKEN_TYPE_REFRASH);
         stringRedisTemplate.opsForValue().set(tokenRefrashKey, tokenRefrash, 31, TimeUnit.DAYS);
 
         return ResponseResult.success(tokenResponse);
