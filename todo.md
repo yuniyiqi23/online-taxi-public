@@ -5,6 +5,8 @@
 - 计价规则不存在 1300-1399
 - 价格计算（起步价+里程费+时长费）BigDecimal
 - 封装BigDecimal计算方法
+7. api-boss、service-driver-user
+- 地区字典拉取，存储数据库
 
 
 ### 已完成任务
