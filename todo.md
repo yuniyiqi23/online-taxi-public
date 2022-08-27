@@ -1,10 +1,8 @@
 ### 任务计划
-7. service-map
-- 地区字典拉取，存储数据库
-- 常量
-- 性别： 0未知1男2女
-8. api-boss、service-driver-user
-9. 名族表、端口管理
+- 查看司机信息日期
+10. api-boss、api-driver注册到nacos
+- 远程调用service-driver-user（drive-user增删改查）
+11、绑定关系
 
 ### 已完成任务
 1. refrash token 刷新双token
@@ -19,4 +17,14 @@
 - 计价规则不存在 1300-1399
 - 价格计算（起步价+里程费+时长费）BigDecimal
 - 封装BigDecimal计算方法
+7. service-map
+- 地区字典拉取，存储数据库
+- 常量
+- 性别： 0未知1男2女
+8. api-boss、service-driver-user
+9. 名族表、端口管理
 
+A列|B列
+---|---
+111|222
+222|333
