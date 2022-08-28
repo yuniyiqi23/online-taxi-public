@@ -3,6 +3,8 @@
 10. api-boss、api-driver注册到nacos
 - 远程调用service-driver-user（drive-user增删改查）
 11、绑定关系
+12、司机登录（校验司机是否存在-->发送验证码，存redis-->校验验证码-->登录成功）
+- 乘客、司机验证码标识不一样（相同手机号）
 
 ### 已完成任务
 1. refrash token 刷新双token
